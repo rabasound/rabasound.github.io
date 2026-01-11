@@ -398,41 +398,35 @@
     const showInfoBtn = document.getElementById('show-info');
     const goBackBtn = document.getElementById('go-back');
 
-    function animateHeight(fromPanel, toPanel) {
-      // Lock current height
+    showInfoBtn.addEventListener('click', () => {
+      mainContent.classList.add('hidden');
+      infoContent.classList.add('visible');
+      animateHeight();
+    });
+
+    goBackBtn.addEventListener('click', () => {
+      mainContent.classList.remove('hidden');
+      infoContent.classList.remove('visible');
+      animateHeight();
+    });
+
+    function animateHeight() {
       const startHeight = introSection.offsetHeight;
       introSection.style.height = startHeight + 'px';
       
-      // Toggle classes
-      fromPanel.classList.toggle('hidden', fromPanel === mainContent);
-      fromPanel.classList.toggle('visible', fromPanel === infoContent);
-      toPanel.classList.toggle('hidden', toPanel === mainContent);
-      toPanel.classList.toggle('visible', toPanel === infoContent);
-      
-      // Measure target height
       requestAnimationFrame(() => {
         introSection.style.height = 'auto';
         const endHeight = introSection.offsetHeight;
         introSection.style.height = startHeight + 'px';
         
-        // Animate to target
         requestAnimationFrame(() => {
           introSection.style.height = endHeight + 'px';
-          // Clear fixed height after transition
           setTimeout(() => {
             introSection.style.height = 'auto';
           }, 400);
         });
       });
     }
-
-    showInfoBtn.addEventListener('click', () => {
-      animateHeight(mainContent, infoContent);
-    });
-
-    goBackBtn.addEventListener('click', () => {
-      animateHeight(infoContent, mainContent);
-    });
   </script>
 
 </body>
