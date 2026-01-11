@@ -21,6 +21,20 @@
       min-height: 100vh;
     }
 
+    /* Added header image styles */
+    .header-image {
+      width: 100%;
+      max-height: 50vh;
+      overflow: hidden;
+    }
+
+    .header-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%);
+    }
+
     .intro {
       padding: 3rem 1.5rem;
       max-width: 600px;
@@ -132,12 +146,17 @@
 </head>
 <body>
 
+  <!-- Added header image section -->
+  <header class="header-image">
+    <img src="header.jpg" alt="Rába Sound">
+  </header>
+
   <section class="intro">
     <h1>Rába Sound</h1>
-    <p>Hungary based DIY high power 4-way HIFI soundsystem.</p>
+    <p>DIY high power 4-way HIFI soundsystem.</p>
     <p>Giving voice to the underground it deserves.</p>
     <p>Contact at: rabasoundsystem@gmail.com</p>
-    <a href="mailto:rabasoundsystem@gmail.com" class="subscribe-link">subscribe to updates & future events</a>
+    <a href="mailto:rabasoundsystem@gmail.com" class="subscribe-link">subscribe to updates</a>
   </section>
 
   <div class="divider"></div>
