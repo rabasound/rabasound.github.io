@@ -43,8 +43,6 @@
       text-align: left;
       position: relative;
       overflow: hidden;
-      /* add smooth height transition so gallery moves slowly */
-      transition: height 0.4s ease;
     }
 
     /* Added content panels for swipe animation */
@@ -284,12 +282,14 @@
     <!-- Info content panel that slides in from right -->
     <div class="content-panel info-content" id="info-content">
       <h1>Information</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-      <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+      <p>Rába is a community sound system, built for the purpose of having an immaculate sword in the hand of the ever so small underground.</p>
+      <p>Our outstanding sound quality is powered by a pair of JMOD 2.0 synergy horns, and 4 SKRAM subwoofers. (In the process of building)</p>
+      <p>Upgrades are planned, and we accept donations to be able to keep rental costs as low as possible.</p>
+      <p>All technical and rental costs go to the technical staff, and for the upgrading and up keeping of the system.</p>
+      <p>All dates and locations of parties and projects where you can listen to Rába will be sent out via email beforehand, so subscription is advised.</p>
+      <p>We are happy to collaborate on any project, and feel free to reach out.</p>
       <div class="link-row">
+        <a href="https://4fund.com/eu2cjw" class="subscribe-link" target="_blank">donate</a>
         <button class="info-link" id="go-back">go back</button>
       </div>
     </div>
@@ -401,32 +401,12 @@
     showInfoBtn.addEventListener('click', () => {
       mainContent.classList.add('hidden');
       infoContent.classList.add('visible');
-      animateHeight();
     });
 
     goBackBtn.addEventListener('click', () => {
       mainContent.classList.remove('hidden');
       infoContent.classList.remove('visible');
-      animateHeight();
     });
-
-    function animateHeight() {
-      const startHeight = introSection.offsetHeight;
-      introSection.style.height = startHeight + 'px';
-      
-      requestAnimationFrame(() => {
-        introSection.style.height = 'auto';
-        const endHeight = introSection.offsetHeight;
-        introSection.style.height = startHeight + 'px';
-        
-        requestAnimationFrame(() => {
-          introSection.style.height = endHeight + 'px';
-          setTimeout(() => {
-            introSection.style.height = 'auto';
-          }, 400);
-        });
-      });
-    }
   </script>
 
 </body>
