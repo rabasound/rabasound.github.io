@@ -41,6 +41,45 @@
       max-width: 600px;
       margin: 0 auto;
       text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Added content panels for swipe animation */
+    .content-panel {
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .main-content {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .main-content.hidden {
+      transform: translateX(-100%);
+      opacity: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .info-content {
+      transform: translateX(100%);
+      opacity: 0;
+      position: absolute;
+      top: 3rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      pointer-events: none;
+    }
+
+    .info-content.visible {
+      transform: translateX(0);
+      opacity: 1;
+      position: relative;
+      top: 0;
+      left: 0;
+      right: 0;
+      pointer-events: auto;
     }
 
     h1 {
@@ -57,18 +96,32 @@
       opacity: 0.85;
     }
 
-    .subscribe-link {
-      display: inline-block;
+    /* Added link row for mirrored links */
+    .link-row {
+      display: flex;
+      justify-content: space-between;
       margin-top: 1.5rem;
+    }
+
+    .subscribe-link,
+    .info-link {
+      display: inline-block;
       color: #e0e0e0;
       text-decoration: none;
       font-size: 0.85rem;
       border-bottom: 1px solid #e0e0e0;
       padding-bottom: 2px;
       transition: opacity 0.2s;
+      cursor: pointer;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: inherit;
     }
 
-    .subscribe-link:hover {
+    .subscribe-link:hover,
+    .info-link:hover {
       opacity: 0.6;
     }
 
@@ -108,7 +161,6 @@
       height: 100%;
       background: rgba(0, 0, 0, 0.95);
       z-index: 1000;
-      cursor: pointer;
       justify-content: center;
       align-items: center;
     }
@@ -118,9 +170,55 @@
     }
 
     .lightbox img {
-      max-width: 95%;
-      max-height: 95%;
+      max-width: 85%;
+      max-height: 90%;
       object-fit: contain;
+      cursor: default;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #e0e0e0;
+      font-size: 2rem;
+      cursor: pointer;
+      padding: 1rem;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .lightbox-nav:hover {
+      opacity: 1;
+    }
+
+    .lightbox-nav.prev {
+      left: 1rem;
+    }
+
+    .lightbox-nav.next {
+      right: 1rem;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: #e0e0e0;
+      font-size: 1.5rem;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      font-family: 'Courier Prime', monospace;
+    }
+
+    .lightbox-close:hover {
+      opacity: 1;
     }
 
     @media (max-width: 600px) {
@@ -135,6 +233,19 @@
       .gallery {
         grid-template-columns: 1fr;
       }
+
+      /* Larger touch targets on mobile */
+      .lightbox-nav {
+        font-size: 1.5rem;
+        padding: 1.5rem;
+      }
+
+      /* Adjust info panel positioning on mobile */
+      .info-content {
+        top: 2rem;
+        left: 1rem;
+        right: 1rem;
+      }
     }
   </style>
 </head>
@@ -146,11 +257,30 @@
   </header>
 
   <section class="intro">
-    <h1>Rába Sound</h1>
-    <p>DIY high power 4-way HIFI soundsystem.</p>
-    <p>Giving voice to the underground it deserves.</p>
-    <p>Contact at: rabasoundsystem@gmail.com</p>
-    <a href="mailto:rabasoundsystem@gmail.com" class="subscribe-link">subscribe to updates</a>
+    <!-- Main content panel that slides out left -->
+    <div class="content-panel main-content" id="main-content">
+      <h1>Rába Sound</h1>
+      <p>DIY high power 4-way HIFI soundsystem.</p>
+      <p>Giving voice to the underground it deserves.</p>
+      <p>Contact at: rabasoundsystem@gmail.com</p>
+      <div class="link-row">
+        <a href="mailto:rabasoundsystem@gmail.com" class="subscribe-link">subscribe to updates</a>
+        <button class="info-link" id="show-info">information</button>
+      </div>
+    </div>
+
+    <!-- Info content panel that slides in from right -->
+    <div class="content-panel info-content" id="info-content">
+      <h1>Information</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+      <div class="link-row">
+        <button class="info-link" id="go-back">go back</button>
+      </div>
+    </div>
   </section>
 
   <section class="gallery">
@@ -175,26 +305,84 @@
     </div>
   </section>
 
-  <!-- Lightbox for magnified view -->
+  <!-- Updated lightbox with navigation buttons -->
   <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightbox-close">x</button>
+    <button class="lightbox-nav prev" id="prev">&lt;</button>
     <img src="/placeholder.svg" alt="Magnified view" id="lightbox-img">
+    <button class="lightbox-nav next" id="next">&gt;</button>
   </div>
 
+  <!-- Updated script with navigation logic -->
   <script>
     const galleryItems = document.querySelectorAll('.gallery-item img');
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const closeBtn = document.getElementById('lightbox-close');
 
-    galleryItems.forEach(img => {
+    let currentIndex = 0;
+    const images = Array.from(galleryItems);
+
+    function showImage(index) {
+      // wrap around
+      if (index < 0) index = images.length - 1;
+      if (index >= images.length) index = 0;
+      currentIndex = index;
+      lightboxImg.src = images[currentIndex].src;
+    }
+
+    galleryItems.forEach((img, index) => {
       img.addEventListener('click', () => {
+        currentIndex = index;
         lightboxImg.src = img.src;
         lightbox.classList.add('active');
       });
     });
 
-    lightbox.addEventListener('click', () => {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex + 1);
+    });
+
+    closeBtn.addEventListener('click', () => {
       lightbox.classList.remove('active');
-      lightboxImg.src = '';
+    });
+
+    // close when clicking the background (not the image or buttons)
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+      }
+    });
+
+    // keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+      if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+      if (e.key === 'Escape') lightbox.classList.remove('active');
+    });
+
+    const mainContent = document.getElementById('main-content');
+    const infoContent = document.getElementById('info-content');
+    const showInfoBtn = document.getElementById('show-info');
+    const goBackBtn = document.getElementById('go-back');
+
+    showInfoBtn.addEventListener('click', () => {
+      mainContent.classList.add('hidden');
+      infoContent.classList.add('visible');
+    });
+
+    goBackBtn.addEventListener('click', () => {
+      mainContent.classList.remove('hidden');
+      infoContent.classList.remove('visible');
     });
   </script>
 
