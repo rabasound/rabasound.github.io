@@ -2,8 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Rába</title>
+  <title>Rába Sound</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Open Graph meta tags for social media previews -->
+  <meta name="description" content="DIY high power 4-way HIFI soundsystem. Giving voice to the underground it deserves.">
+  <meta property="og:title" content="Rába Sound">
+  <meta property="og:description" content="DIY high power 4-way HIFI soundsystem. Giving voice to the underground it deserves.">
+  <meta property="og:image" content="https://rabasound.github.io/header.jpg">
+  <meta property="og:url" content="https://rabasound.github.io">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <!-- Favicon as inline SVG with "R" in Courier style -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a0a0a' width='100' height='100'/><text x='50' y='72' font-family='Courier' font-size='70' fill='%23e0e0e0' text-anchor='middle'>R</text></svg>">
+  
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
 
@@ -19,6 +32,22 @@
       color: #e0e0e0;
       line-height: 1.6;
       min-height: 100vh;
+      /* added position relative for grain overlay */
+      position: relative;
+    }
+
+    /* Grain overlay - subtle film grain effect on dark areas */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     }
 
     /* Added header image styles */
@@ -275,7 +304,7 @@
       <p>Contact at: rabasoundsystem@gmail.com</p>
       <div class="link-row">
         <!-- updated subscribe link to Google Forms -->
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScX6KC7oHkc5-JpqXaImPZxqEPzcXggVu8jtwB4kJnkn2a05A/viewform?usp=dialog" class="subscribe-link" target="_blank">subscribe to mail</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScX6KC7oHkc5-JpqXaImPZxqEPzcXggVu8jtwB4kJnkn2a05A/viewform?usp=dialog" class="subscribe-link" target="_blank">subscribe to updates</a>
         <button class="info-link" id="show-info">information</button>
       </div>
     </div>
@@ -409,6 +438,11 @@
       infoContent.classList.remove('visible');
     });
   </script>
+
+  <!-- Added footer with last updated date -->
+  <footer style="padding: 2rem 1.5rem; text-align: center; opacity: 0.4; font-size: 0.75rem;">
+    last updated: january 2026
+  </footer>
 
 </body>
 </html>
