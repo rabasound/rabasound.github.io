@@ -457,30 +457,34 @@
     const goBackBtn = document.getElementById('go-back');
 
     showInfoBtn.addEventListener('click', () => {
-      // Measure heights
-      const mainHeight = mainContent.offsetHeight;
+      const currentIntroHeight = introSection.offsetHeight;
       
-      // Temporarily make info visible to measure it
+      // Temporarily make info visible off-screen to measure it
+      infoContent.style.position = 'absolute';
       infoContent.style.visibility = 'hidden';
-      infoContent.style.position = 'relative';
       infoContent.style.opacity = '1';
       infoContent.style.transform = 'translateX(0)';
+      infoContent.classList.add('visible');
       const infoHeight = infoContent.offsetHeight;
       
       // Reset info to hidden state
-      infoContent.style.visibility = '';
       infoContent.style.position = '';
+      infoContent.style.visibility = '';
       infoContent.style.opacity = '';
       infoContent.style.transform = '';
+      infoContent.classList.remove('visible');
       
-      // Set intro section to current height, then animate to new height
-      introSection.style.minHeight = mainHeight + 'px';
+      // Lock current height first to prevent any jump
+      introSection.style.minHeight = currentIntroHeight + 'px';
       
       // Force reflow
       introSection.offsetHeight;
       
+      // Calculate target height (info content + padding)
+      const targetHeight = infoHeight + 96; // 3rem top + 3rem bottom padding = ~96px
+      
       // Animate gallery down by setting new min-height
-      introSection.style.minHeight = infoHeight + 'px';
+      introSection.style.minHeight = targetHeight + 'px';
       
       // After gallery moves down (400ms), swap the text
       setTimeout(() => {
@@ -490,8 +494,19 @@
     });
 
     goBackBtn.addEventListener('click', () => {
-      // Measure main content height for target
+      mainContent.style.position = 'absolute';
+      mainContent.style.visibility = 'hidden';
+      mainContent.style.opacity = '1';
+      mainContent.style.transform = 'translateX(0)';
+      mainContent.classList.remove('hidden');
       const mainHeight = mainContent.offsetHeight;
+      
+      // Reset main to hidden state
+      mainContent.style.position = '';
+      mainContent.style.visibility = '';
+      mainContent.style.opacity = '';
+      mainContent.style.transform = '';
+      mainContent.classList.add('hidden');
       
       // Swap text first
       mainContent.classList.remove('hidden');
@@ -499,7 +514,8 @@
       
       // After text swaps (400ms), slide gallery back up
       setTimeout(() => {
-        introSection.style.minHeight = mainHeight + 'px';
+        const targetHeight = mainHeight + 96; // account for padding
+        introSection.style.minHeight = targetHeight + 'px';
         
         // Clean up min-height after animation
         setTimeout(() => {
