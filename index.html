@@ -72,6 +72,9 @@
       text-align: left;
       position: relative;
       overflow: hidden;
+    }
+
+    .intro.transitioning {
       transition: min-height 0.4s ease;
     }
 
@@ -295,7 +298,7 @@
     <img src="header.jpg" alt="Rába Sound" fetchpriority="high">
   </header>
 
-  <section class="intro">
+  <section class="intro" id="intro-section">
     <!-- Main content panel that slides out left -->
     <div class="content-panel main-content" id="main-content">
       <h1>Rába Sound</h1>
@@ -363,7 +366,7 @@
     const prevBtn = document.getElementById('prev');
     const nextBtn = document.getElementById('next');
     const closeBtn = document.getElementById('lightbox-close');
-    const introSection = document.querySelector('.intro');
+    const introSection = document.getElementById('intro-section');
 
     let currentIndex = 0;
     const images = Array.from(galleryItems);
@@ -456,13 +459,66 @@
     const goBackBtn = document.getElementById('go-back');
 
     showInfoBtn.addEventListener('click', () => {
+      const mainHeight = mainContent.offsetHeight;
+      const infoContent_el = infoContent;
+      
+      // Temporarily make info visible to measure
+      infoContent_el.style.position = 'absolute';
+      infoContent_el.style.visibility = 'hidden';
+      infoContent_el.style.transform = 'translateX(0)';
+      infoContent_el.style.opacity = '1';
+      const infoHeight = infoContent_el.offsetHeight;
+      infoContent_el.style.position = '';
+      infoContent_el.style.visibility = '';
+      infoContent_el.style.transform = '';
+      infoContent_el.style.opacity = '';
+      
+      // Set initial height and enable transition
+      introSection.style.minHeight = mainHeight + 'px';
+      introSection.classList.add('transitioning');
+      
+      // Animate to new height
+      requestAnimationFrame(() => {
+        introSection.style.minHeight = infoHeight + 'px';
+      });
+      
+      // Swap content
       mainContent.classList.add('hidden');
       infoContent.classList.add('visible');
     });
 
     goBackBtn.addEventListener('click', () => {
+      const infoHeight = infoContent.offsetHeight;
+      
+      // Temporarily make main visible to measure
+      mainContent.style.position = 'absolute';
+      mainContent.style.visibility = 'hidden';
+      mainContent.style.transform = 'translateX(0)';
+      mainContent.style.opacity = '1';
+      const mainHeight = mainContent.offsetHeight;
+      mainContent.style.position = '';
+      mainContent.style.visibility = '';
+      mainContent.style.transform = '';
+      mainContent.style.opacity = '';
+      
+      // Set initial height and enable transition
+      introSection.style.minHeight = infoHeight + 'px';
+      introSection.classList.add('transitioning');
+      
+      // Animate to new height
+      requestAnimationFrame(() => {
+        introSection.style.minHeight = mainHeight + 'px';
+      });
+      
+      // Swap content
       mainContent.classList.remove('hidden');
       infoContent.classList.remove('visible');
+      
+      // Clean up after animation
+      setTimeout(() => {
+        introSection.style.minHeight = '';
+        introSection.classList.remove('transitioning');
+      }, 400);
     });
   </script>
 
