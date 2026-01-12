@@ -72,6 +72,7 @@
       text-align: left;
       position: relative;
       overflow: hidden;
+      transition: min-height 0.4s ease;
     }
 
     /* Added content panels for swipe animation */
@@ -456,13 +457,55 @@
     const goBackBtn = document.getElementById('go-back');
 
     showInfoBtn.addEventListener('click', () => {
-      mainContent.classList.add('hidden');
-      infoContent.classList.add('visible');
+      // Measure heights
+      const mainHeight = mainContent.offsetHeight;
+      
+      // Temporarily make info visible to measure it
+      infoContent.style.visibility = 'hidden';
+      infoContent.style.position = 'relative';
+      infoContent.style.opacity = '1';
+      infoContent.style.transform = 'translateX(0)';
+      const infoHeight = infoContent.offsetHeight;
+      
+      // Reset info to hidden state
+      infoContent.style.visibility = '';
+      infoContent.style.position = '';
+      infoContent.style.opacity = '';
+      infoContent.style.transform = '';
+      
+      // Set intro section to current height, then animate to new height
+      introSection.style.minHeight = mainHeight + 'px';
+      
+      // Force reflow
+      introSection.offsetHeight;
+      
+      // Animate gallery down by setting new min-height
+      introSection.style.minHeight = infoHeight + 'px';
+      
+      // After gallery moves down (400ms), swap the text
+      setTimeout(() => {
+        mainContent.classList.add('hidden');
+        infoContent.classList.add('visible');
+      }, 400);
     });
 
     goBackBtn.addEventListener('click', () => {
+      // Measure main content height for target
+      const mainHeight = mainContent.offsetHeight;
+      
+      // Swap text first
       mainContent.classList.remove('hidden');
       infoContent.classList.remove('visible');
+      
+      // After text swaps (400ms), slide gallery back up
+      setTimeout(() => {
+        introSection.style.minHeight = mainHeight + 'px';
+        
+        // Clean up min-height after animation
+        setTimeout(() => {
+          introSection.style.minHeight = '';
+        }, 400);
+      }, 400);
     });
   </script>
 
