@@ -423,6 +423,33 @@
       if (e.key === 'Escape') lightbox.classList.remove('active');
     });
 
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    lightbox.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeThreshold = 50; // minimum distance for swipe
+      const diff = touchStartX - touchEndX;
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          // swiped left, go to next
+          showImage(currentIndex + 1);
+        } else {
+          // swiped right, go to previous
+          showImage(currentIndex - 1);
+        }
+      }
+    }
+
     const mainContent = document.getElementById('main-content');
     const infoContent = document.getElementById('info-content');
     const showInfoBtn = document.getElementById('show-info');
